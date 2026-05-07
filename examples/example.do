@@ -1,6 +1,6 @@
 /********************************************************************
   pmean example file
-  Version 2.0.0
+  Version 2.0.1
 ********************************************************************/
 
 clear all
@@ -8,44 +8,53 @@ set more off
 
 *------------------------------------------------------------
 * Example 1: two-dimensional panel decomposition
+*           (Grunfeld investment panel, 10 firms x 20 years)
 *------------------------------------------------------------
 
-sysuse auto, clear
+webuse grunfeld, clear
+xtset company year
 
-gen year = 2000 + mod(_n, 5)
-gen id   = mod(_n, 3)
-
-pmean price mpg, id(id) time(year) replace
+pmean invest mvalue, id(company) time(year) replace
 
 describe pm_*
 return list
 
 *------------------------------------------------------------
-* Example 2: three-dimensional panel decomposition
+* Example 2: listwise sample across multiple outcomes
+*           (a common sample is enforced)
 *------------------------------------------------------------
 
-sysuse auto, clear
+pmean invest mvalue kstock, id(company) time(year) listwise replace
 
-gen year   = 2000 + mod(_n, 5)
-gen id     = mod(_n, 3)
-gen sector = mod(_n, 4)
+*------------------------------------------------------------
+* Example 3: three-dimensional panel decomposition
+*           (Munnell public-capital panel:
+*            48 states x 17 years x 9 BEA regions)
+*------------------------------------------------------------
 
-pmean price mpg weight, id(id) time(year) dim3(sector) replace
+webuse productivity, clear
+xtset state year
+gen lngsp = ln(gsp)
+
+pmean lngsp, id(state) time(year) dim3(region) replace
 
 describe pm_*
-list price pm_idmean_price pm_timemean_price pm_dim3mean_price pm_threefe_price in 1/10
+list lngsp pm_idmean_lngsp pm_timemean_lngsp pm_dim3mean_lngsp pm_threefe_lngsp in 1/10
 
 * Summary table and CSV export
-pmean price mpg, id(id) time(year) dim3(sector) table save(pmean_summary.csv) replace
+pmean lngsp, id(state) time(year) dim3(region) table save(pmean_summary.csv) replace
 
 *------------------------------------------------------------
-* Example 3: full pairwise three-dimensional decomposition
+* Example 4: full pairwise three-dimensional decomposition
 *------------------------------------------------------------
 
-pmean price, id(id) time(year) dim3(sector) full genprefix(p2_) replace
+* Note: -region- nests -state-, so pmean v2.0.1 prints an
+* informational note that the id-by-region interaction is
+* collinear with the between-region component.
+pmean lngsp, id(state) time(year) dim3(region) full genprefix(p2_) replace
 
 describe p2_*
-list price p2_idtime_mean_price p2_iddim3_mean_price p2_timedim3_mean_price p2_threeway_price in 1/10
+list lngsp p2_idtime_mean_lngsp p2_iddim3_mean_lngsp p2_timedim3_mean_lngsp p2_threeway_lngsp in 1/10
 
 *------------------------------------------------------------
 * Clean up example export file
