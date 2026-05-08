@@ -1,48 +1,39 @@
-# Changelog
-
-All notable changes to `pmean` are documented in this file.
-
-The format is based on [Keep a Changelog](https://keepachangelog.com/), and this project adheres to [Semantic Versioning](https://semver.org/).
-
 ## [2.0.2] - 2026-05-08
 
-A documentation-and-quality release. Fully backward compatible with 2.0.0.
+An SSC-conformance and quality release. Fully backward compatible with 2.0.1: variable names, generated outputs, and existing do-files continue to work without modification.
 
 ### Added
 
-- New `listwise` option that requires the variables in `varlist` to be jointly non-missing within the estimation sample. By default, missingness is still handled per-variable.
-- Informational note when `dim3()` is nested within `id()` (or vice versa), warning that the id-by-dim3 interaction component is collinear with a main effect in that case. The additive identity still holds and `pmean` does not error.
+- New returned scalar `r(N)`: number of observations in the estimation sample. Standard SSC convention; useful for downstream programs that test sample size after `pmean`.
+- New returned macro `r(cmd) = "pmean"`: standard convention for r-class commands; lets other tools detect that `pmean` was the most recent command.
+- New returned macro `r(cmdline)`: stores the command exactly as the user typed it; useful for replication and audit trails.
+- New "References" section in the help file with full bibliographic citations for Wansbeek and Kapteyn (1989), Mundlak (1978), and Correia (2016).
+- New "Also see" section in the help file referencing `xtreg`, `xtsum`, `xtdescribe`, `egen`, `pwmean`, and `reghdfe` (if installed). The `pwmean` reference includes a contextual note distinguishing descriptive panel decomposition (`pmean`) from inferential pairwise mean comparison (`pwmean`).
+- Tests for the new returned values; encode-first workflow test for string identifiers.
 
 ### Changed
 
-- All 17 generated variable **labels** rewritten for clarity. **Variable names are unchanged**, preserving full backward compatibility.
-- Help-file discussion of unbalanced panels sharpened: the three additive identities (2D, 3D main effects, and full 3-way ANOVA) hold exactly observation-by-observation in any panel; what fails in unbalanced panels is component orthogonality, the additive variance decomposition, and numerical equivalence with the OLS residual from `reghdfe x, absorb(id time)`.
-- Reference added to Wansbeek and Kapteyn (1989, *Journal of Econometrics* 41: 341-361) for the unbalanced-panel theory.
-- Help-file examples updated to use built-in panel datasets (`webuse grunfeld`, `webuse productivity`) instead of fabricating panels from `sysuse auto` with `mod(_n, ...)`.
-- `example.do` rewritten to use built-in panel datasets and to demonstrate the new `listwise` option.
+- **Stata version requirement reduced from 17.0 to 15.1.** None of the operations used by `pmean` require Stata 16 or 17 features; lowering the requirement broadens the user audience to all Stata 15.1+ users.
+- Shebang line revised to canonical SSC form: `*! pmean v2.0.2 ANAW-JZ 8may2026`.
+- Variable name validation now explicitly rejects names exceeding 32 characters with a clear error message before any variable is created.
+- Help-file examples updated: removed the redundant `gen lngsp = ln(gsp)` step from the productivity-panel examples (the `gsp` variable is already log-transformed in Stata's shipped dataset).
+- Author affiliations updated to authoritative form: "School of Economics, Department of Industrial Economics, Nanjing University, Nanjing 210093, China" and "Department of Economics, University of Sahiwal, Sahiwal 57000, Pakistan."
+- Co-author email corrected to `zhengjh@nju.edu.cn`.
 
 ### Documented
 
-- Edge-case behavior: single-id panels, single-period samples, nested third dimensions, per-variable vs. listwise missingness.
-- Behavior of `by g: egen y = mean(x) if touse` (per-group mean over `touse==1` observations; missing on `touse==0` observations).
+- Behavior of generated variables on observations excluded by the `listwise` option: they remain missing by design, consistent with Stata's standard handling of `if touse` in `egen`.
+- Compatibility with `set varabbrev off` (verified under both Stata 17 and the explicit `version 15.1` block).
 
 ### Backward compatibility
 
-- Variable names are unchanged.
-- All v2.0.0 do-files continue to work without modification.
+- Variable names unchanged.
+- All previously returned scalars and macros unchanged.
+- All v2.0.1 do-files continue to work without modification.
+- Mathematical behavior of all 17 generated decomposition variables unchanged; the additive identities remain exact at every observation in any panel, balanced or unbalanced.
 
-## [2.0.0] - 2026-04-28
+### Distribution
 
-Three-dimensional release.
-
-### Added
-
-- Three-dimensional panel decomposition via the `dim3()` option. Adds three new generated variables in 3D mode: `pm_dim3mean_x`, `pm_between_dim3_x`, and `pm_threefe_x`.
-- Optional `full` (synonym `pairwise`) for the full ANOVA-style decomposition with three pairwise cell means, three pairwise interaction components, and a three-way residual.
-- `table` summary option and `save()` CSV export.
-- Returned scalar `r(overall_x)` for each input variable.
-- `r(mode)` returning `2D` or `3D`.
-
-## [1.x] - earlier
-
-- Two-dimensional panel means and decomposition (id mean, time mean, within-id deviation, between-id component, between-time component, two-way demeaned variable).
+- Submitted to the SSC archive (Boston College Department of Economics).
+- GitHub release tagged `v2.0.2`.
+- Zenodo version DOI: 10.5281/zenodo.XXXXXXXX.
