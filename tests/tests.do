@@ -1,6 +1,17 @@
 /********************************************************************
   pmean test file
   Version 2.0.2
+
+  Twelve regression test blocks verifying:
+    * the additive decomposition identities are exact at every
+      observation in 2D, 3D main-effects, and full 3D ANOVA modes;
+    * documented options behave as specified;
+    * error codes follow Stata conventions (rc 110, 111, 198, 2000);
+    * the new returns introduced in v2.0.2 (r(N), r(cmd), r(cmdline))
+      are populated.
+
+  Run from inside the repo as:  do tests/tests.do
+  Successful run ends with: "pmean 2.0.2: all 12 test blocks passed."
 ********************************************************************/
 
 version 15.1
@@ -10,6 +21,7 @@ set seed 12345
 
 *------------------------------------------------------------
 * 1. Backward-compatible two-dimensional formulas
+*    + new v2.0.2 returns: r(N), r(cmd), r(cmdline)
 *------------------------------------------------------------
 
 clear
@@ -21,8 +33,14 @@ input id time x y
 end
 
 pmean x y, id(id) time(time) replace
-local mode = r(mode)
-local dims = r(dimensions)
+
+* Capture v2.0.2 returns into locals BEFORE the assert wave.
+* -assert- is r-class and clears r() between asserts.
+local mode    = r(mode)
+local dims    = r(dimensions)
+local N_test1 = r(N)
+local cmd_test1     `"`r(cmd)'"'
+local cmdline_test1 `"`r(cmdline)'"'
 
 assert abs(pm_overall_x - 25) < 1e-10
 assert abs(pm_idmean_x - 15) < 1e-10 if id == 1
@@ -41,6 +59,11 @@ assert abs(pm_overall_y - 2.5) < 1e-10
 assert abs(pm_twfe_y) < 1e-10
 assert `dims' == 2
 assert "`mode'" == "2D"
+
+* New in v2.0.2 -- via captured locals
+assert `N_test1' == 4
+assert "`cmd_test1'" == "pmean"
+assert strpos(`"`cmdline_test1'"', "pmean x y") == 1
 
 * Existing generated variables should require replace
 capture noisily pmean x, id(id) time(time)
@@ -82,9 +105,10 @@ input id time sector x
 end
 
 pmean x, id(id) time(time) dim3(sector) replace
-local mode = r(mode)
-local dims = r(dimensions)
-local dim3 = r(dim3)
+local mode    = r(mode)
+local dims    = r(dimensions)
+local dim3    = r(dim3)
+local N_test3 = r(N)
 
 assert abs(pm_overall_x - 166.5) < 1e-10
 assert abs(pm_idmean_x - 116.5) < 1e-10 if id == 1
@@ -99,6 +123,7 @@ assert abs(pm_threefe_x) < 1e-10
 assert `dims' == 3
 assert "`mode'" == "3D"
 assert "`dim3'" == "sector"
+assert `N_test3' == 8
 
 *------------------------------------------------------------
 * 4. Explicit additive-identity check (3D main effects)
@@ -169,7 +194,7 @@ assert abs(s_overall_x - 15) < 1e-10 if id == 1
 assert missing(s_overall_x) if id != 1
 
 *------------------------------------------------------------
-* 7. NEW in 2.0.1: listwise option enforces a common sample
+* 7. listwise option enforces a common sample
 *------------------------------------------------------------
 
 clear
@@ -187,15 +212,16 @@ assert abs(pm_overall_x - 25)        < 1e-10        // mean of (10,20,30,40)
 assert abs(pm_overall_y - 8/3)       < 1e-10        // mean of (1,3,4)
 
 * With listwise, x is averaged only over obs where BOTH x and y are
-* non-missing -- that excludes (id=1, time=2).
+* non-missing -- that excludes (id=1, time=2). On the excluded row,
+* the generated variables are missing by design.
 pmean x y, id(id) time(time) listwise replace
-assert abs(pm_overall_x - 80/3) < 1e-10             // mean of (10,30,40)
-assert abs(pm_overall_y - 8/3)  < 1e-10             // mean of (1,3,4)
-assert missing(pm_overall_x) if id == 1 & time == 2 // dropped under listwise
+assert abs(pm_overall_x - 80/3) < 1e-10 if !(id == 1 & time == 2)
+assert abs(pm_overall_y - 8/3)  < 1e-10 if !(id == 1 & time == 2)
+assert missing(pm_overall_x) if id == 1 & time == 2
 assert missing(pm_overall_y) if id == 1 & time == 2
 
 *------------------------------------------------------------
-* 8. NEW in 2.0.1: nested dim3 detection (informational note)
+* 8. Nested dim3 detection (informational note)
 *    -- should not error; computation should still satisfy
 *       the additive identity.
 *------------------------------------------------------------
@@ -234,21 +260,25 @@ assert abs(r(sd))   < 1e-10
 drop check_nest
 
 *------------------------------------------------------------
-* 9. String identifiers and string third dimension
+* 9. Numeric ids derived from string variables
+*    (the canonical Stata workflow: encode strings before xtset)
 *------------------------------------------------------------
 
 clear
-input str1 firm int year str1 sector double x
+input str1 firm_str int year str1 sector_str double x
 "A" 2020 "M" 1
 "A" 2021 "M" 3
 "B" 2020 "S" 5
 "B" 2021 "S" 7
 end
 
+encode firm_str,   gen(firm)
+encode sector_str, gen(sector)
+
 pmean x, id(firm) time(year) dim3(sector) replace
 assert abs(pm_overall_x - 4) < 1e-10
-assert abs(pm_idmean_x - 2) < 1e-10 if firm == "A"
-assert abs(pm_idmean_x - 6) < 1e-10 if firm == "B"
+assert abs(pm_idmean_x - 2) < 1e-10 if firm_str == "A"
+assert abs(pm_idmean_x - 6) < 1e-10 if firm_str == "B"
 assert !missing(pm_threefe_x)
 
 *------------------------------------------------------------
@@ -259,7 +289,14 @@ capture noisily pmean x if year < 1900, id(firm) time(year) dim3(sector) replace
 assert _rc == 2000
 
 *------------------------------------------------------------
-* 11. Large-data smoke test + identity check
+* 11. Nonexistent variable returns rc 111
+*------------------------------------------------------------
+
+capture noisily pmean nonexistent_var, id(firm) time(year) replace
+assert _rc == 111
+
+*------------------------------------------------------------
+* 12. Large-data smoke test + identity check
 *------------------------------------------------------------
 
 clear
@@ -288,5 +325,8 @@ assert abs(r(max))  < 1e-8
 assert abs(r(min))  < 1e-8
 drop ident_large
 
-* Keep a concise success message
-display as text "pmean 2.0.2: all 11 test blocks passed."
+*------------------------------------------------------------
+* Final
+*------------------------------------------------------------
+
+display as text "pmean 2.0.2: all 12 test blocks passed."
