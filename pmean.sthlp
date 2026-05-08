@@ -1,5 +1,5 @@
 {smcl}
-{* *! version 2.0.1  08may2026}{...}
+{* *! version 2.0.2  08may2026}{...}
 {vieweralsosee "pmean GitHub" "https://github.com/ahmadNJU/stata-pmean"}{...}
 {viewerjumpto "Syntax" "pmean##syntax"}{...}
 {viewerjumpto "Description" "pmean##description"}{...}
