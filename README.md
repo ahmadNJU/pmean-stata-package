@@ -1,6 +1,6 @@
 # pmean
 
-[![Stata](https://img.shields.io/badge/Stata-17%2B-blue)](https://www.stata.com/)
+[![Stata](https://img.shields.io/badge/Stata-15.1%2B-blue)](https://www.stata.com/)
 [![Version](https://img.shields.io/badge/version-2.0.2-blue)](https://github.com/ahmadNJU/stata-pmean/releases)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19752278.svg)](https://doi.org/10.5281/zenodo.19752278)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
