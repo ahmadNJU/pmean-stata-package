@@ -2,7 +2,7 @@
 
 [![Stata](https://img.shields.io/badge/Stata-15.1%2B-blue)](https://www.stata.com/)
 [![Version](https://img.shields.io/badge/version-2.0.2-blue)](https://github.com/ahmadNJU/stata-pmean/releases)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19752278.svg)](https://doi.org/10.5281/zenodo.19752278)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20079459.svg)](https://doi.org/10.5281/zenodo.20079459)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
 `pmean` is a Stata user-written command for two- and three-dimensional panel means and decomposition. It generates marginal means, between/within components, and (optionally) full ANOVA-style interaction components for balanced and unbalanced panels.
