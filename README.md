@@ -1,7 +1,7 @@
 # pmean
 
 [![Stata](https://img.shields.io/badge/Stata-17%2B-blue)](https://www.stata.com/)
-[![Version](https://img.shields.io/badge/version-2.0.1-blue)](https://github.com/ahmadNJU/stata-pmean/releases)
+[![Version](https://img.shields.io/badge/version-2.0.2-blue)](https://github.com/ahmadNJU/stata-pmean/releases)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19752278.svg)](https://doi.org/10.5281/zenodo.19752278)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
@@ -85,9 +85,9 @@ Jianghuai Zheng, School of Economics, Nanjing University, China.
 
 ## Citation
 
-If you use `pmean` in your research, please cite the **specific version** for reproduciblility. For version 2.0.1:
+If you use `pmean` in your research, please cite the **specific version** for reproduciblility. For version 2.0.2:
 
-> Nawaz, A., & Zheng, J. (2026). *pmean: Stata command for panel means and decomposition* (Version 2.0.1) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.20075556
+> Nawaz, A., & Zheng, J. (2026). *pmean: Stata command for panel means and decomposition* (Version 2.0.2) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.20075556
 
 All releases of `pmean` are also accessible through a single concept DOI that always resolves to the latest version: [10.5281/zenodo.19752278](https://doi.org/10.5281/zenodo.19752278). Use this one for general references where you do not need to pin a specific version.
 
