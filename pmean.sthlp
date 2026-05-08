@@ -317,7 +317,7 @@ Nanjing University, Nanjing 210093, China{p_end}
 Department of Economics, University of Sahiwal, Sahiwal 57000, Pakistan{p_end}
 
 {pstd}
-Email: {browse "mailto:ahmad.nawaz@uosahiwal.edu.pk":ahmad.nawaz@uosahiwal.edu.pk}{p_end}
+Email: {browse "mailto:ahmadnawaz@uosahiwal.edu.pk":ahmadnawaz@uosahiwal.edu.pk}{p_end}
 
 {pstd}Jianghuai Zheng{p_end}
 
