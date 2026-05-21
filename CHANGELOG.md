@@ -32,6 +32,6 @@ An SSC-conformance and quality release. Fully backward compatible with 2.0.1: va
 
 ### Distribution
 
-- Submitted to the SSC archive (Boston College Department of Economics).
+- Published on the SSC archive as S459715 (Boston College Department of Economics): ssc install pmean.
 - GitHub release tagged `v2.0.2`.
 - Zenodo version DOI: 10.5281/zenodo.XXXXXXXX.
