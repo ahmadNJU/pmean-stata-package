@@ -89,7 +89,7 @@ Jianghuai Zheng, School of Economics, Department of Industrial Economics, Nanjin
 
 If you use `pmean` in your research, please cite the **specific version** you used so that your analysis is reproducible. For version 2.0.2:
 
-> Nawaz, A., & Zheng, J. (2026). *PMEAN: Stata module to compute panel-data means and exact within-between decomposition for two- and three-dimensional panel data* (Version 2.0.2) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.20079459
+> Nawaz, A., and J. Zheng. 2026. *PMEAN: Stata module to compute panel-data means and exact within-between decomposition for two- and three-dimensional panel data*. Statistical Software Components S459715, Boston College Department of Economics. https://doi.org/10.5281/zenodo.19752278
 
 All releases of `pmean` are also accessible through a single concept DOI that always resolves to the latest version: [10.5281/zenodo.19752278](https://doi.org/10.5281/zenodo.19752278). Use this one for general references where you do not need to pin a specific version.
 
