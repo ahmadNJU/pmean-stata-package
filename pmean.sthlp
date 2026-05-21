@@ -336,9 +336,8 @@ Repository: {browse "https://github.com/ahmadNJU/stata-pmean":github.com/ahmadNJ
 {bf:Citation:}{p_end}
 
 {pstd}
-Nawaz, A., and J. Zheng. 2026. {it:pmean: Stata module for panel-data means
-and exact within-between decomposition}. Statistical Software Components
-SXXXXXX, Boston College Department of Economics.{p_end}
+Nawaz, A., and J. Zheng. 2026. {it:PMEAN: Stata module to compute panel-data means and exact within-between decomposition for two- and three-dimensional panel data}. Statistical Software Components
+Statistical Software Components S459715, Boston College Department of Economics.{p_end}
 
 {pstd}
 Version-pinned DOI: {browse "https://doi.org/10.5281/zenodo.20079459":10.5281/zenodo.20079459}{p_end}
