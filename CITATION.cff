@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite the version used in your analysis."
 type: software
-title: "pmean: Stata command for panel means and decomposition"
+title: "PMEAN: Stata module to compute panel-data means and exact within-between decomposition for two- and three-dimensional panel data"
 version: "2.0.2"
 date-released: "2026-05-08"
 authors:
