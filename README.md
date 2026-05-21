@@ -20,6 +20,8 @@ The third dimension can represent a sector, region, product group, industry, coh
 From within Stata:
 
 ```stata
+ssc install pmean
+OR
 net install pmean, from("https://raw.githubusercontent.com/ahmadNJU/stata-pmean/main") replace
 ```
 
