@@ -7,10 +7,10 @@ date-released: "2026-05-08"
 authors:
   - family-names: Nawaz
     given-names: Ahmad
-    affiliation: "School of Economics, Nanjing University, Nanjing, China; Department of Economics, University of Sahiwal, Sahiwal, Pakistan"
+    affiliation: "School of Economics, Department of Industrial Economics, Nanjing University, Nanjing, China; Department of Economics, University of Sahiwal, Sahiwal, Pakistan"
   - family-names: Zheng
     given-names: Jianghuai
-    affiliation: "School of Economics, Nanjing University, Nanjing, China"
+    affiliation: "School of Economics, Department of Industrial Economics, Nanjing University, Nanjing, China"
 doi: 10.5281/zenodo.20079459
 repository-code: "https://github.com/ahmadNJU/stata-pmean"
 url: "https://github.com/ahmadNJU/stata-pmean"
